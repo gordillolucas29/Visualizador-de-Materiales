@@ -1,44 +1,35 @@
 function procesarTexto() {
-	const inputText = document.getElementById("inputText").value;
-	const materialTable = document.getElementById("materialTable");
-	materialTable.innerHTML = "";
+    const inputText = document.getElementById("inputText").value;
+    const materialTable = document.getElementById("materialTable");
+    materialTable.innerHTML = "";
 
-	try {
-		const materiales = JSON.parse(inputText);
+    try {
+        const materiales = JSON.parse(inputText);
 
-		const table = document.createElement("div");
-		table.className = "table-row";
+        for (const material of materiales) {
+            if (/^\d{5,10}/.test(material.name)) {
+                material.name = material.name.replace(/^\d{5,10}/, "").trim();
+            }
 
-		const name = document.createElement("h1");
-		name.className = "name-row";
-		name.textContent = "Nombre"
-		table.appendChild(name);
+            const row = document.createElement("div");
+            row.className = "material-row";
 
-		const ammount = document.createElement("h1");
-		ammount.className = "name-row";
-		ammount.textContent = "Cantidad"
-		table.appendChild(ammount);
+            const nameCell = document.createElement("div");
+            nameCell.className = "material-name";
+            nameCell.textContent = material.name;
+            row.appendChild(nameCell);
 
-		for (const material of materiales) {
-			const row = document.createElement("div");
-			row.className = "material-row";
+            const amountCell = document.createElement("div");
+            amountCell.className = "material-amount";
+            amountCell.textContent = material.cantidad;
+            row.appendChild(amountCell);
 
-			const nameCell = document.createElement("div");
-			nameCell.className = "material-name";
-			nameCell.textContent = material.name;
-			row.appendChild(nameCell);
-
-			const amountCell = document.createElement("div");
-			amountCell.className = "material-amount";
-			amountCell.textContent = material.cantidad;
-			row.appendChild(amountCell);
-
-			materialTable.appendChild(row);
-		}
-	} catch (error) {
-		const div = document.createElement("div");
-		div.className = "error";
-		div.textContent = "Error al procesar el texto del arreglo de objetos.";
-		materialTable.appendChild(div);
-	}
+            materialTable.appendChild(row);
+        }
+    } catch (error) {
+        const div = document.createElement("div");
+        div.className = "error";
+        div.textContent = "Error al procesar el texto del arreglo de objetos.";
+        materialTable.appendChild(div);
+    }
 }
